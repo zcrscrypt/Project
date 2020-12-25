@@ -1,0 +1,97 @@
+CREATE DATABASE IF NOT EXISTS road;
+
+USE road;
+CREATE TABLE IF NOT EXISTS carriers (
+carriers_id INT PRIMARY KEY AUTO_INCREMENT,
+carriers_name VARCHAR (20) NOT NULL,
+carriers_phone CHAR(15) NOT NULL,
+carriers_adress VARCHAR (90) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS manufacturers (
+manufacturers_id INT PRIMARY KEY AUTO_INCREMENT,
+manufacturers_name VARCHAR (50) NOT NULL,
+manufacturers_phone CHAR (10) NOT NULL,
+manufacturers_adress VARCHAR (90) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS bus(
+bus_id INT PRIMARY KEY AUTO_INCREMENT,
+carriers_id INT NOT NULL,
+manufacturers_id INT NOT NULL,
+capacity INT NOT NULL,
+FOREIGN KEY (carriers_id) REFERENCES carriers (carriers_id),
+FOREIGN KEY (manufacturers_id) REFERENCES manufacturers (manufacturers_id)
+);
+
+CREATE TABLE IF NOT EXISTS countries (
+countries_id INT PRIMARY KEY AUTO_INCREMENT,
+countries_name VARCHAR (25) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS city (
+city_id INT PRIMARY KEY AUTO_INCREMENT,
+countries_id INT NOT NULL,
+FOREIGN KEY (countries_id) REFERENCES countries (countries_id)
+);
+
+CREATE TABLE IF NOT EXISTS bus_stop(
+bus_stop_id INT PRIMARY KEY AUTO_INCREMENT,
+city_id INT NOT NULL,
+bus_stop_name VARCHAR (25) NOT NULL,
+FOREIGN KEY (city_id) REFERENCES city (city_id)
+);
+
+CREATE TABLE IF NOT EXISTS members(
+members_id INT PRIMARY KEY AUTO_INCREMENT,
+number_of_members INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS drivers (
+drivers_id INT PRIMARY KEY AUTO_INCREMENT,
+members_id INT NOT NULL,
+drivers_first_name VARCHAR(25) NOT NULL,
+drivers_last_name VARCHAR(25) NOT NULL,
+drivers_middle_name VARCHAR(25) NOT NULL,
+drivers_phone CHAR(10) NOT NULL,
+drivers_birth_data DATE NOT NULL,
+FOREIGN KEY (members_id) REFERENCES members (members_id)
+);
+CREATE TABLE IF NOT EXISTS change_D (
+change_D_id INT PRIMARY KEY AUTO_INCREMENT,
+change_D_1 INT NOT NULL, 
+change_D_2 INT NOT NULL,
+change_D_3 INT NOT NULL,
+change_D_4 INT NOT NULL,
+FOREIGN KEY (change_D_1) REFERENCES drivers (drivers_id),
+FOREIGN KEY (change_D_2) REFERENCES drivers (drivers_id),
+FOREIGN KEY (change_D_3) REFERENCES drivers (drivers_id),
+FOREIGN KEY (change_D_4) REFERENCES drivers (drivers_id)
+);
+CREATE TABLE IF NOT EXISTS trip(
+trip_id INT PRIMARY KEY AUTO_INCREMENT,
+bus_id INT NOT NULL,
+departure DATE NOT NULL, 
+sending_time TIME NOT NULL,
+arrival_time TIME NOT NULL,
+arrival_data DATE NOT NULL,
+FOREIGN KEY (bus_id) REFERENCES bus (bus_id)
+);
+
+CREATE TABLE IF NOT EXISTS passengers(
+passengers_id INT PRIMARY KEY AUTO_INCREMENT,
+passengers_first_name VARCHAR(25) NOT NULL,
+passengers_last_name VARCHAR(25) NOT NULL,
+passengers_middle_name VARCHAR(25) NOT NULL,
+passengers_gender VARCHAR(10) NOT NULL,
+passengers_birth DATE NOT NULL,
+passengers_phone CHAR(10) NOT NULL,
+passengers_email VARCHAR(50) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS ticket(
+ticket_id INT PRIMARY KEY AUTO_INCREMENT,
+trip_id INT NOT NULL,
+passengers_id INT NOT NULL,
+prise INT NOT NULL,
+FOREIGN KEY (trip_id) REFERENCES trip ( trip_id),
+FOREIGN KEY (passengers_id) REFERENCES passengers (passengers_id)
+);
